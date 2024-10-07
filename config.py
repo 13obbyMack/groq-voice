@@ -19,11 +19,17 @@ if not GROQ_API_KEY:
 
 
 class Voices(Enum):
-    APHRODITE = "fQuiOHUGZu5WDKWT80Wz"
-    ADAM = "pNInz6obpgDQGcFmaJgB" 
-    CJ_MURPH = "876MHA6EtWKaHTEGzjy5"
 
-VOICE_ID = Voices.ADAM
+    George_Carlin = "WUskcuzAbpFeh46oYy0B"
+    Max_Payne = "vosASqmKV6UsA6rHMkqP"
+    Obi_Wan_Kenobi = "Yj8J8mqj4zaLvpq7MLEt"
+    David_Goggins = "Z3lN8xrIGAbOXleAdIeQ"
+    Duke_Nukem = "Q3V0aigkBauXSZTYJsmr"
+    Scary_Terry = "yAZetOJ1I6kTvOehOOGp"
+    Sterling_Archer = "J2tWojuB5wEBXrVezwXm"
+    Rick_Sanchez = "q7gnMYP8uD2QRVYhvQzt"
+
+VOICE_ID = Voices.George_Carlin
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100

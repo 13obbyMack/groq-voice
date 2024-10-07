@@ -6,7 +6,6 @@ import numpy as np
 from io import BytesIO
 from elevenlabs.client import ElevenLabs
 from elevenlabs import VoiceSettings
-from agent import Agent
 from pydub import AudioSegment
 from openai import OpenAI
 from groq import Groq
@@ -23,16 +22,42 @@ from config import (
     PRE_SPEECH_BUFFER_DURATION,
     Voices
 )
+from agent import (
+    Agent,
+    select_character_voice,
+    get_custom_guidance,
+    get_voice_id
+)
 
 
 class VoiceAssistant:
-    def __init__(
-        self,
-        voice_id: Optional[str] = Voices.ADAM,
-    ):
+    def __init__(self):
+        # Prompt the user to select a character voice and get custom guidance
+        voice_name, character_prompt = select_character_voice()
+        custom_guidance = get_custom_guidance()
+        # Debugging print statements
+        print(f"Voice Name: {voice_name}")
+        print(f"Character Prompt: {character_prompt}")
+        print(f"Custom Guidance: {custom_guidance}")
+
+        # Combine prompts to create the system prompt
+        system_prompt = f"""
+        Do not include anything in parentheses in your response.
+        {character_prompt}
+
+        {custom_guidance}
+        """
+        # Retrieve the corresponding voice_id
+        voice_id = get_voice_id(voice_name)
+        if voice_id:
+            self.voice_id = voice_id
+            print(f"Voice ID: {voice_id}")
+        else:
+            raise ValueError(f"No matching voice found for {voice_name}")
+        
         self.audio = pyaudio.PyAudio()
-        self.agent = Agent()
-        self.voice_id = voice_id
+        self.agent = Agent(system_prompt=system_prompt)
+        # self.voice_id = voice_name.replace(' ', '_')  # Use selected voice name for ElevenLabs
         self.xi_client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
         self.oai_client = OpenAI(api_key=OPENAI_API_KEY)
         self.g_client = Groq(api_key=GROQ_API_KEY)
@@ -131,7 +156,7 @@ class VoiceAssistant:
 
     def speech_to_text_g(self, audio_bytes):
         """
-        Transcribe speech to text using OpenAI.
+        Transcribe speech to text using Groq.
 
         Args:
             audio_bytes (BytesIO): The audio bytes to transcribe.
@@ -143,7 +168,7 @@ class VoiceAssistant:
         audio_bytes.seek(0)
         transcription = self.g_client.audio.transcriptions.create(
             file=("temp.wav", audio_bytes.read()),
-            model="whisper-large-v3",
+            model="distil-whisper-large-v3-en",
         )
         end = time()
         print(transcription)
@@ -165,7 +190,8 @@ class VoiceAssistant:
             optimize_streaming_latency="0",
             output_format="mp3_22050_32",
             text=text,
-            model_id="eleven_multilingual_v2",
+            model_id="eleven_turbo_v2",
+            voice_settings=VoiceSettings(stability=0.3, similarity_boost=0.85, style=0, use_speaker_boost=True)
         )
 
         audio_stream = BytesIO()
