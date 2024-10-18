@@ -7,22 +7,11 @@ from langchain.memory import ConversationBufferMemory
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from typing import Generator, Any, Dict
+from config import AVAILABLE_VOICES
 
 # Load environment variables
 load_dotenv()
 ELEVENLABS_API_KEY = os.getenv('ELEVENLABS_API_KEY')
-
-# Available character voices
-AVAILABLE_VOICES = [
-    "George_Carlin",
-    "Max_Payne",
-    "Obi_Wan_Kenobi",
-    "David_Goggins",
-    "Duke_Nukem",
-    "Scary_Terry",
-    "Sterling_Archer",
-    "Rick_Sanchez"
-]
 
 # Function to select character voice and load corresponding prompt
 def select_character_voice():

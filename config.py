@@ -17,17 +17,28 @@ if not OPENAI_API_KEY:
 if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY environment variable not set")
 
+# Available character voices
+AVAILABLE_VOICES = [
+    "George_Carlin",
+    "Max_Payne",
+    "Obi_Wan_Kenobi",
+    "David_Goggins",
+    "Duke_Nukem",
+    "Scary_Terry",
+    "Sterling_Archer",
+    "Rick_Sanchez"
+]
 
-class Voices(Enum):
-
-    George_Carlin = "WUskcuzAbpFeh46oYy0B"
-    Max_Payne = "vosASqmKV6UsA6rHMkqP"
-    Obi_Wan_Kenobi = "Yj8J8mqj4zaLvpq7MLEt"
-    David_Goggins = "Z3lN8xrIGAbOXleAdIeQ"
-    Duke_Nukem = "Q3V0aigkBauXSZTYJsmr"
-    Scary_Terry = "yAZetOJ1I6kTvOehOOGp"
-    Sterling_Archer = "J2tWojuB5wEBXrVezwXm"
-    Rick_Sanchez = "q7gnMYP8uD2QRVYhvQzt"
+# class Voices(Enum):
+# 
+#     George_Carlin = "WUskcuzAbpFeh46oYy0B"
+#     Max_Payne = "vosASqmKV6UsA6rHMkqP"
+#     Obi_Wan_Kenobi = "Yj8J8mqj4zaLvpq7MLEt"
+#     David_Goggins = "Z3lN8xrIGAbOXleAdIeQ"
+#     Duke_Nukem = "Q3V0aigkBauXSZTYJsmr"
+#     Scary_Terry = "yAZetOJ1I6kTvOehOOGp"
+#     Sterling_Archer = "J2tWojuB5wEBXrVezwXm"
+#     Rick_Sanchez = "q7gnMYP8uD2QRVYhvQzt"
 
 VOICE_ID = Voices.George_Carlin
 FORMAT = pyaudio.paInt16
